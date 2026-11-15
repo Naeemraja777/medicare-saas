@@ -40,7 +40,7 @@
                           </span>
                          @endif
                                 @if(auth()->user()->isReceptionist())
-                                    <a href="{{route('reception.scheduler')}}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium {{request()->routeIs('doctor.appointments') ?'bg-blue-600 text-white':'text-slate-300  hover:bg-slate-800 hover:text-white'}}">
+                    <a href="{{route('reception.scheduler')}}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium {{request()->routeIs('doctor.appointments') ?'bg-blue-600 text-white':'text-slate-300  hover:bg-slate-800 hover:text-white'}}"></a>
                                   <span>
                                      Appointment Scheduler
                                   </span>
