@@ -3,8 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\TenantIdentification;
+use App\Http\Middleware\IdentifyTenant;
 use Illuminate\Http\Request;
+use App\Http\Middleware\CheckRole;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,15 +15,15 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append:[
-            \App\Http\Middleware\TenantIdentification::class,
+            IdentifyTenant::class,
         ]);
         //
         $middleware->web(prepend:[
-            \App\Http\Middleware\TenantIdentification::class,
+            IdentifyTenant::class,
         ]);
         //just add this new alias line
         $middleware->alias([
-            \App\Http\Middleware\CheckRole::class,
+            'role' => CheckRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

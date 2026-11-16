@@ -1,29 +1,42 @@
 <?php
+
 namespace App\Traits;
+
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+trait BelongsToTenant
+{
+    protected static function bootBelongsToTenant(): void
+    {
+        static::addGlobalScope('tenant', function (Builder $builder) {
+            $tenantId = static::resolveTenantId();
+            if ($tenantId) {
+                $builder->where($builder->getModel()->getTable().'.tenant_id', $tenantId);
+            }
+        });
 
-trait BelongsToTenant{
-protected static function bootBelongsToTenant(){
-    //Automatically scope all queries by the authenticated users tenant
-    static::addGlobalScope('tenant',function(Builder $builder){
-        if(auth()->check()){
-            $builder->where('tenant_id',auth()->user()->tenant_id);
+        static::creating(function (Model $model) {
+            if (! $model->tenant_id) {
+                $model->tenant_id = static::resolveTenantId();
+            }
+        });
+    }
+
+    protected static function resolveTenantId(): ?int
+    {
+        if (app()->bound(Tenant::class)) {
+            return app(Tenant::class)->id;
         }
-    });
-    //2 Automatically assign the tenant id when create new records
-  static::creating(function(Model $model){
-      if(auth()->check() && !$model->tenant_id){
-          $model->tenant_id=auth()->user()->tenant_id;
 
-      }
-  });
-}
-public function tenant(){
-    return $this->belongsTo(Tenant::class);
-}
-}
+        // Use hasUser() instead of check() to prevent infinite recursion on User model queries
+        return auth()->hasUser() ? auth()->user()->tenant_id : null;
+    }
 
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+}
 

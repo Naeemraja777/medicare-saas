@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
 
             //Enforce specifice strict roles for clinic compliance
-              $table->string('role')->default('clinic_amin')->after('tenant_id');
+              $table->string('role')->default('clinic_admin')->after('tenant_id');
              //Add indexing for rapid authorization verification queries
             $table->index(['tenant_id','role']);
         });

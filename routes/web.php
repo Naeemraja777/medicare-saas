@@ -3,6 +3,7 @@ use App\Models\User;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Patient;
+use App\Http\Controllers\Admin\StaffController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -31,8 +32,10 @@ Route::middleware(['auth','role:clinic_admin'])->prefix('admin')->group(function
           'staff'=>User::count(),
 
       ];
-      return view('dashboards.admin',compact('stats'));
+      $staffMembers=User::with('doctorProfile')->get();
+      return view('dashboards.admin',compact('stats','staffMembers'));
     })->name('admin.dashboard');
+    Route::post('/staff',[StaffController::class,'store'])->name('add.staff.store');
 });
 Route::middleware(['auth','role:doctor'])->prefix('doctor')->group(function(){
     Route::get('/appointments', function () {
