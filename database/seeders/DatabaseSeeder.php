@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Tenant;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,11 +17,37 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $tenant=Tenant::create([
+            'name'=>'Mayo Central Hospital',
+            'slug'=>'mayo-center',
+            'is_active'=>true,
         ]);
+//        $password=Hash::make('password12345');
+        $password=Hash::make('password123');
+        User::create([
+            'name'=>'John Admin',
+            'email'=>'admin@mediscare.test',
+            'password'=>$password,
+            'tenant_id'=>$tenant->id,
+            'role'=>User::ROLE_ADMIN,
+        ]);
+        User::create([
+            'name'=>'mohd naeem',
+            'email'=>'doctor@medicare.test',
+            'password'=>$password,
+            'tenant_id'=>$tenant->id,
+            'role'=>User::ROLE_DOCTOR,
+        ]);
+        User::create([
+            'name'=>'Azra bibi',
+            'email'=>'reception@medicare.test',
+            'password'=>$password,
+            'tenant_id'=>$tenant->id,
+            'role'=>User::ROLE_RECEPTIONIST,
+        ]);
+
+
+
+
     }
 }

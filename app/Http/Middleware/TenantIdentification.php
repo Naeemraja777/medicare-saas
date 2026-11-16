@@ -2,37 +2,40 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Models\Tenant;
+use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TenantIdentification
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
-        // Identify via Subdomain or Header (Advanced SaaS Pattern)
         $host = $request->getHost();
-        $subdomain = explode('.', $host)[0];
+        $subdomain = null;
 
-        // Fallback for local dev or API header identifiers
+        if (! filter_var($host, FILTER_VALIDATE_IP) && $host !== 'localhost') {
+            $parts = explode('.', $host);
+
+            if ((count($parts) === 2 && $parts[1] === 'localhost') || (count($parts) > 2 && $parts[0] !== 'www')) {
+                $subdomain = $parts[0];
+            }
+        }
+
         $tenantSlug = $request->header('X-Tenant-Slug') ?? $subdomain;
 
-        if ($tenantSlug && $tenantSlug !== 'www' && $tenantSlug !== 'localhost') {
-            $tenant = Tenant::where('slug', $tenantSlug)->where('is_active', true)->first();
+        if ($tenantSlug) {
+            $tenant = Tenant::where('slug', $tenantSlug)
+                ->where('is_active', true)
+                ->first();
 
-            if (!$tenant) {
-                return response()->json(['error' => 'Clinic domain not registered or inactive.'], 404);
+            if (! $tenant) {
+                abort(404, 'Clinic workspace not found or inactive.');
             }
 
-            // Bind the active tenant globally to the Laravel Service Container
             app()->instance(Tenant::class, $tenant);
         }
+
         return $next($request);
     }
 }

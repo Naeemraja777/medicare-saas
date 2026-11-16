@@ -11,15 +11,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Traits\BelongsToTenant;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
+
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable,BelongsToTenant;
     //Define immutable roles
     const ROLE_ADMIN='clinic_admin';
-    const ROLE_DOCTOR='clinic_admin';
+    const ROLE_DOCTOR='doctor';
     const ROLE_RECEPTIONIST='receptionist';
     protected $fillable=[
         'name', 'email', 'password','tenant_id','role'
@@ -44,6 +43,9 @@ class User extends Authenticatable
     }
     public function hasRole(array $roles):bool{
         return in_array($this->role,$roles);
+    }
+    public function doctorProfile(){
+        return $this->hasOne(Doctor::class);
     }
 
     /**

@@ -9,4 +9,6 @@ class Patient extends Model
 {
     use BelongsToTenant;
     protected $guarded=[];
+
+
 }
