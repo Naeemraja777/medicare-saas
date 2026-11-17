@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'slug'=>'mayo-center',
             'is_active'=>true,
         ]);
-//        $password=Hash::make('password12345');
+//        $password=Hash::make('password12347');
         $password=Hash::make('password123');
         User::create([
             'name'=>'John Admin',
