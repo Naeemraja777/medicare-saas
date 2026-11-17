@@ -28,10 +28,17 @@
 
                 </div>
                 @if(auth()->user()->isAdmin())
-                    <a href="{{route('admin.dashboard')}}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium {{request()->routeIs('admin.dashboard') ?'bg-blue-600 text-white':'text-slate-300  hover:bg-slate-800 hover:text-white'}}"></a>
-                    <span>
+                    <a href="{{route('admin.dashboard')}}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium {{request()->routeIs('admin.dashboard') ?'bg-blue-600 text-white':'text-slate-300  hover:bg-slate-800 hover:text-white'}}">
+                        <span>
                         Clinic Overview
                    </span>
+                    </a>
+                    <a href="{{route('patients.index')}}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium {{request()->routeIs('patients') ?'bg-blue-600 text-white':'text-slate-300  hover:bg-slate-800 hover:text-white'}}">
+                        <span>
+                        Patient Directory
+                   </span>
+                    </a>
+
                 @endif
                         @if(auth()->user()->isDoctor())
                             <a href="{{route('doctor.appointments')}}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium {{request()->routeIs('doctor.appointments') ?'bg-blue-600 text-white':'text-slate-300  hover:bg-slate-800 hover:text-white'}}"></a>
