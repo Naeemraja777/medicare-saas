@@ -30,9 +30,9 @@
                             <tr>
                                 <td class="px-6 py-4 font-medium">{{$appointment->appointment_date}}</td>
                                 <td class="px-6 py-4">{{$appointment->patient->name??'N/A'}}</td>
-                                <td class="px-6 py-4 text-slate-600">{{$appointment->symptoms_description??'General Checkup'}}</td>
+                                <td class="px-6 py-4 text-slate-600">{{$appointment->symptoms_descriptions}}</td>
                                 <td class="px-6 py-4">
-                                    <span class="inline-flex rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700">{{ucfirst($appointments->status)}}total</span>
+                                    <span class="inline-flex rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700">{{ucfirst($appointment->status)}}</span>
                                 </td>
                             </tr>
                         @endforeach

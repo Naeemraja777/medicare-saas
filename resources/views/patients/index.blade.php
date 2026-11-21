@@ -12,7 +12,7 @@
         <form method="GET" action="{{ route('patients.index') }}" class="flex-1 flex gap-2 max-w-lg">
             <input type="text" name="search" value="{{ request('search') }}"
                    placeholder="Search by Patient #, Name, Phone, or Email..."
-                   class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500">
+                   class="w-full rounded-lg  text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500">
             <button type="submit" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 cursor-pointer">
                 Search
             </button>

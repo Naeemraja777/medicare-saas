@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'is_active'=>true,
         ]);
 //        $password=Hash::make('password12347');
-        $password=Hash::make('password123');
+        $password=Hash::make('password1234');
         User::create([
             'name'=>'John Admin',
             'email'=>'admin@mediscare.test',
